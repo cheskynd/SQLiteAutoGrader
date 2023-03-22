@@ -6,7 +6,7 @@ class TestSqliteQueries(unittest.TestCase):
 
     def setUp(self):
         # create connection and cursor objects
-        self.conn = sqlite3.connect("ta.db")
+        self.conn = sqlite3.connect("worker_project.db")
         self.cursor = self.conn.cursor()
         self.queries = Queries(self.cursor)
 
@@ -17,7 +17,7 @@ class TestSqliteQueries(unittest.TestCase):
 
     def test_query_results(self):
         # define the two queries to compare
-        query1 = "SELECT * FROM Students;"
+        query1 = "SELECT ProjNo FROM Project;"
         studentQ1 = Queries.getStudentNames(self)
 
         self.cursor.execute(query1)
