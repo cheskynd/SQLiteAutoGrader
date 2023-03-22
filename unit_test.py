@@ -1,6 +1,6 @@
 import unittest
 import sqlite3
-from template2 import Queries
+from template import Queries
 
 class TestSqliteQueries(unittest.TestCase):
 
