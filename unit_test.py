@@ -1,6 +1,7 @@
 import unittest
 import sqlite3
-from template import Queries
+#from template import Queries
+from Assignment import Queries
 
 class TestSqliteQueries(unittest.TestCase):
 
@@ -17,14 +18,25 @@ class TestSqliteQueries(unittest.TestCase):
 
     def test_query_results(self):
         # define the two queries to compare
-        query1 = "SELECT ProjNo FROM Project;"
-        studentQ1 = Queries.getStudentNames(self)
+        question1 = "SELECT * FROM Project"
+        question2 = "SELECT lastName, firstName FROM Project CROSS JOIN Worker WHERE projNo = 1001 ORDER BY lastName ASC"
+        question3 = "SELECT lastName, firstName FROM WORKER WHERE empId not in (SELECT projMgrId FROM Project)"
+        Questions = [question1,question2,question3]
+        studentSolutions = Queries.questions(self)
+        #studentSolutions = 
+        print(studentSolutions)
+        #for solution in studentSolutions:
+        for question, solution in enumerate(studentSolutions):
+            self.cursor.execute(Questions[question])
+            result = self.cursor.fetchall()
+        print(self.assertEqual(result, solution))
 
-        self.cursor.execute(query1)
-        result1 = self.cursor.fetchall()
 
-        # assert that the results are equal
-        self.assertEqual(result1, studentQ1)
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
