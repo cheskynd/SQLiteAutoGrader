@@ -12,9 +12,9 @@ class Queries(object):
             self.cursor.execute(question)
             result = self.cursor.fetchall()
             results.append(result)
-        for i in results:
-            print(i)
-            print('\n')
+        # for i in results:
+        #     print(i)
+        #     print('\n')
         return results
 # if __name__ == '__main__':
 #     conn = sqlite3.connect("worker_project.db")

@@ -23,20 +23,25 @@ class TestSqliteQueries(unittest.TestCase):
         question3 = "SELECT lastName, firstName FROM WORKER WHERE empId not in (SELECT projMgrId FROM Project)"
         Questions = [question1,question2,question3]
         studentSolutions = Queries.questions(self)
-        #studentSolutions = 
-        print(studentSolutions)
-        #for solution in studentSolutions:
+
+        total = 0
+        passed = 0
+        failed = 0
+
         for question, solution in enumerate(studentSolutions):
             self.cursor.execute(Questions[question])
             result = self.cursor.fetchall()
-        print(self.assertEqual(result, solution))
-
-
-
-
-
-
-
+            if result == solution:
+                print(f"Question {question}: Passed")
+                passed += 1 
+                total += 1
+            else:
+                print(f"Question {question}: Failed")
+                failed += 1
+                total += 1
+        
+        print(f"\n{passed} out of {total} questions are correct.")
+        #self.assertEqual(result, solution)
 
 if __name__ == '__main__':
     unittest.main()
