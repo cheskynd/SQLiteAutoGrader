@@ -42,6 +42,7 @@ class TestSqliteQueries(unittest.TestCase):
                 total += 1
 
         print(f"\n{passed} out of {total} questions are correct.")
+        print('You received ' + str((passed/total)*100) + '%')
         # self.assertEqual(result, solution)
 
 

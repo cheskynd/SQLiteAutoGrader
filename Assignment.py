@@ -9,7 +9,7 @@ class Queries(object):
 
     def questions(self):
         results = []
-        question1 = "SELECT * FROM Project"
+        question1 = "SELECT * FROM Project limit 4"
         question2 = "SELECT lastName FROM Project CROSS JOIN Worker WHERE projNo = 1001 ORDER BY lastName ASC"
         question3 = "SELECT lastName FROM WORKER WHERE empId not in (SELECT projMgrId FROM Project)"
         Questions = [question1, question2, question3]
@@ -25,5 +25,8 @@ if __name__ == '__main__':
     cursor = conn.cursor()
     s = Queries(cursor)
     res = s.questions()
+
     for i in res:
-        print("\n",i)
+        for row in i:
+            print(row)
+        print('\n')
