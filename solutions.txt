@@ -1,0 +1,3 @@
+SELECT * FROM Project
+SELECT lastName FROM Project CROSS JOIN Worker WHERE projNo = 1001 ORDER BY lastName ASC
+SELECT lastName FROM WORKER WHERE empId not in (SELECT projMgrId FROM Project)
