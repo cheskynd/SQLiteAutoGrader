@@ -1,17 +1,30 @@
 import sqlite3
-
-# create connection and cursor objects
-conn = sqlite3.connect("worker_project.db")
-cursor = conn.cursor()
+import sys
 
 
-def tearDown():
+def connect_to_database(database_name):
+    """
+    Connect to database and create a cursor object.
+    :param database_name: The name of the database to connect
+    :return: Returns a tuple containing connection and cursor objects
+    """
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+    return conn, cursor
+
+def tearDown(conn,cursor):
     # close cursor and connection objects
     cursor.close()
     conn.close()
 
 
-def runStudentQueries(studentFile):
+def runStudentQueries(studentFile,cursor):
+    """
+    This Function runs the queries in the Student file or the student queries
+    :param studentFile: The student text file that contains their SQL solutions
+    :param cursor: Cursor object
+    :return: The results of the query solutions
+    """
     studentSolutions = open(studentFile, 'r')
     studentSolutionsLines = studentSolutions.readlines()
     studentAnswers = []
@@ -25,7 +38,13 @@ def runStudentQueries(studentFile):
     return studentResults
 
 
-def runKeyQueries(answerFile):
+def runKeyQueries(answerFile,cursor):
+    """
+    This Function runs the queries in the answer file
+    :param answerFile: The text file that holds the SQL solutions
+    :param cursor: Cursor object
+    :return: Returns the results of the SQL queries
+    """
     solutionFile = open(answerFile, 'r')
     solutionLines = solutionFile.readlines()
     AnswerKey = []
@@ -42,6 +61,13 @@ def runKeyQueries(answerFile):
 
 
 def test_query_results(studentAns, Answers):
+    """
+    This function compares the student queries to the solutions and results of how
+    were correct or wrong.
+    :param studentAns:
+    :param Answers:
+    :return: None
+    """
     passed, failed, total = 0, 0, 0
     total = len(Answers)
     for x, answer in enumerate(Answers):
@@ -56,10 +82,24 @@ def test_query_results(studentAns, Answers):
 
 
 def main():
-    studentAns = runStudentQueries("solution2.txt")
-    Answers = runKeyQueries('solutions.txt')
+    if len(sys.argv) < 2:
+        print('Please specify student solution text file')
+    elif len(sys.argv) == 2:
+        studentAnsFileName = sys.argv[1]
+        AnswersFileName = 'solutions.txt'
+    elif len(sys.argv) == 3:
+        studentAnsFileName = sys.argv[1]
+        AnswersFileName = sys.argv[2]
+    else:
+        print('Invalid number of arguments')
+        print(len(sys.argv))
+        sys.exit(1)
+
+    conn, cursor = connect_to_database("worker_project.db")
+    studentAns = runStudentQueries(studentAnsFileName,cursor)
+    Answers = runKeyQueries(AnswersFileName,cursor)
     test_query_results(studentAns, Answers)
-    tearDown()
+    tearDown(conn,cursor)
 
 
 main()
